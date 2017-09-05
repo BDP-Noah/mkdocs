@@ -1,4 +1,5 @@
-# coding: utf-8
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 """
 Standalone file utils.
@@ -417,25 +418,32 @@ def get_theme_names():
 
 
 def filename_to_title(filename):
+    with open(os.path.join('docs', filename), 'r') as stream:
+        return stream.readline(128).decode('utf8').replace('#', '').replace('\n', '')
 
-    title = os.path.splitext(filename)[0]
-    title = title.replace('-', ' ').replace('_', ' ')
-    # Capitalize if the filename was all lowercase, otherwise leave it as-is.
-    if title.lower() == title:
-        title = title.capitalize()
-
-    return title
+    # title = os.path.splitext(filename)[0]
+    # title = title.replace('-', ' ').replace('_', ' ')
+    # # Capitalize if the filename was all lowercase, otherwise leave it as-is.
+    # if title.lower() == title:
+    #     title = title.capitalize()
+    #
+    # return title
 
 
 def dirname_to_title(dirname):
 
-    title = dirname
-    title = title.replace('-', ' ').replace('_', ' ')
-    # Capitalize if the dirname was all lowercase, otherwise leave it as-is.
-    if title.lower() == title:
-        title = title.capitalize()
+    index = os.path.join('docs', dirname, '.title')
+    if os.path.exists(index):
+        with open(index, 'r') as stream:
+            return stream.readline(128).decode('utf8').replace('\n', '')
+    else:
+        title = dirname
+        title = title.replace('-', ' ').replace('_', ' ')
+        # Capitalize if the dirname was all lowercase, otherwise leave it as-is.
+        if title.lower() == title:
+            title = title.capitalize()
 
-    return title
+        return title
 
 
 def find_or_create_node(branch, key):

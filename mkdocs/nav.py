@@ -1,4 +1,5 @@
-# coding: utf-8
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 """
 Deals with generating the site-wide navigation.
@@ -20,9 +21,9 @@ def filename_to_title(filename):
     """
     Automatically generate a default title, given a filename.
     """
-    if utils.is_homepage(filename):
-        return 'Home'
-
+    # if utils.is_homepage(filename):
+    #     return 'Home'
+    #
     return utils.filename_to_title(filename)
 
 
@@ -236,7 +237,7 @@ class Header(object):
     def indent_print(self, depth=0):
         indent = '    ' * depth
         active_marker = ' [*]' if self.active else ''
-        ret = '%s%s%s\n' % (indent, self.title, active_marker)
+        ret = u'%s%s%s\n' % (indent, self.title, active_marker)
         for item in self.children:
             ret += item.indent_print(depth + 1)
         return ret
@@ -249,7 +250,7 @@ class Header(object):
 
 def _path_to_page(path, title, url_context, use_directory_urls):
     if title is None:
-        title = filename_to_title(path.split(os.path.sep)[-1])
+        title = filename_to_title(path)
     url = utils.get_url_path(path, use_directory_urls)
     return Page(title=title, url=url, path=path,
                 url_context=url_context)
